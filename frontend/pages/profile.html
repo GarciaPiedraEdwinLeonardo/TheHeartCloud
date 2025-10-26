@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - TheHeartCloud</title>
+    <link rel="stylesheet" href="./../css/style.css">
+    <link rel="stylesheet" href="./../css/profile.css">
+    <link rel="shortcut icon" href="./../images/favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="profile-page">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-container">
+                <!-- Logo -->
+                <div class="logo">
+                    <img src="./../images/logoprincipal.png" alt="TheHeartCloud" class="logo-img">
+                    <span class="logo-text">TheHeartCloud</span>
+                </div>
+
+                <!-- Navegación -->
+                <nav class="nav">
+                    <a href="./dashboard.html" class="nav-link">Principal</a>
+                    <a href="#profile" class="nav-link active">Mi Perfil</a>
+                    <a href="#" class="nav-link" id="logoutBtn">Cerrar Sesión</a>
+                </nav>
+
+                <!-- Menú móvil -->
+                <button class="mobile-menu-btn" aria-label="Menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="profile-main">
+        <div class="container">
+            <!-- Información del Usuario -->
+            <section class="profile-section">
+                <div class="profile-header">
+                    <h1>Mi Perfil</h1>
+                    <p>Gestiona tu información y cuenta</p>
+                </div>
+
+                <div class="profile-content">
+                    <!-- Información Personal -->
+                    <div class="profile-card">
+                        <h2>Información Personal</h2>
+                        <div class="profile-info">
+                            <div class="info-item">
+                                <label>Nombre de Usuario:</label>
+                                <span id="profileUsername">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Correo Electrónico:</label>
+                                <span id="profileEmail">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Miembro Desde:</label>
+                                <span id="profileMemberSince">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estadísticas -->
+                    <div class="profile-card">
+                        <h2>Mis Estadísticas</h2>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number" id="statsForums">0</div>
+                                <div class="stat-label">Foros Creados</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="statsPosts">0</div>
+                                <div class="stat-label">Publicaciones</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="statsComments">0</div>
+                                <div class="stat-label">Comentarios</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acciones de Cuenta -->
+                    <div class="profile-card danger-zone">
+                        <h2>Atencion</h2>
+                        <p class="warning-text">Esta accion es irreversible. Procede con cuidado.</p>
+                        
+                        <div class="danger-actions">
+                            <button class="btn btn-danger" id="deleteAccountBtn">
+                                🗑️ Eliminar Mi Cuenta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Eliminar Cuenta -->
+        <!-- Modal Eliminar Cuenta (OCULTO inicialmente) -->
+    <div class="modal" id="deleteAccountModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Eliminar Cuenta</h2>
+                <button class="modal-close" id="closeDeleteModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-message">
+                    <div class="warning-icon">⚠️</div>
+                    <h3>¡Atención! Esta acción es irreversible</h3>
+                    <p>Al eliminar tu cuenta:</p>
+                    <ul>
+                        <li>Se eliminarán todos tus foros, publicaciones y comentarios</li>
+                        <li>Perderás acceso permanente a la plataforma</li>
+                        <li>No podrás recuperar tu cuenta ni tu contenido</li>
+                    </ul>
+                </div>
+
+                <form class="modal-form" id="deleteAccountForm">
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">
+                            Para confirmar, ingresa tu contraseña:
+                        </label>
+                        <div class="password-input-container">
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                name="confirmPassword" 
+                                class="form-input"
+                                placeholder="Tu contraseña actual"
+                                required
+                            >
+                            <button type="button" class="password-toggle" id="passwordToggle">
+                                👁️
+                            </button>
+                        </div>
+                        <div class="form-error" id="passwordError"></div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelDelete">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger" id="confirmDelete">
+                            <span class="btn-text">Eliminar Cuenta Permanentemente</span>
+                            <div class="btn-loading" style="display: none;">
+                                <div class="loading-spinner"></div>
+                                Eliminando...
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./../js/profile.js"></script>
+</body>
+</html>

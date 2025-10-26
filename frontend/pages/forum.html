@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro - TheHeartCloud</title>
+    <link rel="stylesheet" href="./../css/style.css">
+    <link rel="stylesheet" href="./../css/forum.css">
+    <link rel="shortcut icon" href="./../images/favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="forum-page">
+    <!-- Mensaje de Responsabilidad Médica -->
+    <div class="medical-popup" id="medicalPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>⚠️ Aviso de Responsabilidad Médica</h3>
+                <button class="popup-close" id="closeMedicalPopup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <p>
+                    <strong>Importante:</strong> TheHeartCloud es una plataforma comunitaria. 
+                    La información compartida por los usuarios <strong>no sustituye el consejo médico profesional</strong>. 
+                    Siempre consulte con especialistas certificados para diagnósticos y tratamientos médicos.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-container">
+                <!-- Logo -->
+                <div class="logo">
+                    <a href="./../index.html" style="text-decoration: none; display: flex; align-items: center; gap: var(--space-sm);">
+                        <img src="./../images/logoprincipal.png" alt="TheHeartCloud" class="logo-img">
+                        <span class="logo-text">TheHeartCloud</span>
+                    </a>
+                </div>
+
+                <!-- Navegación -->
+                <nav class="nav">
+                    <a href="./dashboard.html" class="nav-link">Principal</a>
+                    <a href="./profile.html" class="nav-link">Mi Perfil</a>
+                    <a href="#" class="nav-link login-btn" id="logoutBtn">Cerrar Sesión</a>
+                </nav>
+
+                <!-- Menú móvil -->
+                <button class="mobile-menu-btn" aria-label="Menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="forum-main">
+        <div class="container">
+            <!-- Header del Foro -->
+            <section class="forum-header-section">
+                <div class="forum-header-content">
+                    <div class="forum-info">
+                        <nav class="breadcrumb">
+                            <a href="./dashboard.html">Principal</a>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="breadcrumb-current" id="forumBreadcrumb">Foro</span>
+                        </nav>
+                        <h1 id="forumTitle">Cargando foro...</h1>
+                        <p id="forumDescription" class="forum-description"></p>
+                        <div class="forum-meta">
+                            <span id="forumAuthor" class="forum-author"></span>
+                            <span id="forumDate" class="forum-date"></span>
+                        </div>
+                    </div>
+                    <div class="forum-actions" id="forumActions" style="display: none;">
+                        <button class="btn btn-danger" id="deleteForumBtn">
+                            🗑️ Eliminar Foro
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Crear Nueva Publicación -->
+            <section class="create-post-section">
+                <div class="create-post-card">
+                    <div class="create-post-header">
+                        <h3>💬 Nueva Publicación</h3>
+                        <div class="post-guidelines">
+                            <small>Comparte experiencias, preguntas o consejos con la comunidad</small>
+                        </div>
+                    </div>
+                    <form class="create-post-form" id="createPostForm">
+                        <div class="form-group">
+                            <label for="postContent" class="form-label">Tu publicación:</label>
+                            <textarea 
+                                id="postContent" 
+                                name="postContent" 
+                                class="form-input post-textarea"
+                                placeholder="¿Qué te gustaría compartir con la comunidad? Recuerda que esta es una plataforma educativa y de apoyo mutuo..."
+                                required
+                                minlength="10"
+                                maxlength="300"
+                                rows="5"
+                            ></textarea>
+                            <div class="form-footer">
+                                <div class="form-hint">Mínimo 10 caracteres, máximo 300</div>
+                                <div class="char-counter">
+                                    <span id="charCount">0</span>/300
+                                </div>
+                            </div>
+                            <div class="form-error" id="postContentError"></div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="createPostBtn">
+                                <span class="btn-text">📤 Publicar</span>
+                                <div class="btn-loading" style="display: none;">
+                                    <div class="loading-spinner"></div>
+                                    Publicando...
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Lista de Publicaciones -->
+            <section class="posts-section">
+                <div class="section-header">
+                    <h2>📝 Publicaciones de la Comunidad</h2>
+                    <div class="posts-count" id="postsCount">
+                        <span class="loading-text">Cargando...</span>
+                    </div>
+                </div>
+                
+                <div class="posts-container" id="postsContainer">
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Cargando publicaciones...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ===== MODALES ===== -->
+
+    <!-- Modal Eliminar Foro -->
+    <div class="modal" id="deleteForumModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🗑️ Eliminar Foro</h2>
+                <button class="modal-close" id="closeDeleteForumModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-section">
+                    <div class="warning-icon">⚠️</div>
+                    <div class="warning-content">
+                        <h3>¡Atención! Esta acción es irreversible</h3>
+                        <p>Al eliminar este foro:</p>
+                        <ul class="warning-list">
+                            <li>Se eliminarán <strong>TODAS las publicaciones y comentarios</strong></li>
+                            <li>Los demás usuarios <strong>perderán acceso</strong> al foro</li>
+                            <li><strong>No podrás recuperar</strong> el contenido eliminado</li>
+                        </ul>
+                        <p class="warning-final">¿Estás absolutamente seguro de continuar?</p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelDeleteForum">
+                        ↩️ Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteForum">
+                        <span class="btn-text">🗑️ Eliminar Foro Permanentemente</span>
+                        <div class="btn-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            Eliminando...
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Publicación -->
+    <div class="modal" id="editPostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Editar Publicación</h2>
+                <button class="modal-close" id="closeEditPostModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="modal-form" id="editPostForm">
+                    <div class="form-group">
+                        <label for="editPostContent" class="form-label">Contenido de la publicación</label>
+                        <textarea 
+                            id="editPostContent" 
+                            name="editPostContent" 
+                            class="form-input post-textarea"
+                            required
+                            minlength="10"
+                            maxlength="300"
+                            rows="5"
+                            placeholder="Edita tu publicación..."
+                        ></textarea>
+                        <div class="form-footer">
+                            <div class="form-hint">Mínimo 10 caracteres, máximo 300</div>
+                            <div class="char-counter">
+                                <span id="editCharCount">0</span>/300
+                            </div>
+                        </div>
+                        <div class="form-error" id="editPostContentError"></div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelEditPost">
+                            ↩️ Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitEditPost">
+                            <span class="btn-text">💾 Guardar Cambios</span>
+                            <div class="btn-loading" style="display: none;">
+                                <div class="loading-spinner"></div>
+                                Guardando...
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Publicación -->
+    <div class="modal" id="deletePostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🗑️ Eliminar Publicación</h2>
+                <button class="modal-close" id="closeDeletePostModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-section">
+                    <div class="warning-icon">⚠️</div>
+                    <div class="warning-content">
+                        <h3>¿Eliminar esta publicación?</h3>
+                        <p>Esta acción eliminará:</p>
+                        <ul class="warning-list">
+                            <li>La publicación completa</li>
+                            <li>Todos los comentarios asociados</li>
+                        </ul>
+                        <p class="warning-final"><strong>Esta acción no se puede deshacer.</strong></p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelDeletePost">
+                        ↩️ Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmDeletePost">
+                        <span class="btn-text">🗑️ Eliminar Publicación</span>
+                        <div class="btn-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            Eliminando...
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Comentario -->
+    <div class="modal" id="editCommentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Editar Comentario</h2>
+                <button class="modal-close" id="closeEditCommentModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="modal-form" id="editCommentForm">
+                    <div class="form-group">
+                        <label for="editCommentContent" class="form-label">Tu comentario:</label>
+                        <textarea 
+                            id="editCommentContent" 
+                            name="editCommentContent" 
+                            class="form-input"
+                            required
+                            minlength="5"
+                            maxlength="150"
+                            rows="4"
+                            placeholder="Edita tu comentario..."
+                        ></textarea>
+                        <div class="form-footer">
+                            <div class="form-hint">Mínimo 5 caracteres, máximo 150</div>
+                            <div class="char-counter">
+                                <span id="editCommentCharCount">0</span>/150
+                            </div>
+                        </div>
+                        <div class="form-error" id="editCommentContentError"></div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelEditComment">
+                            ↩️ Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitEditComment">
+                            <span class="btn-text">💾 Guardar Cambios</span>
+                            <div class="btn-loading" style="display: none;">
+                                <div class="loading-spinner"></div>
+                                Guardando...
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./../js/forum.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal - TheHeartCloud</title>
+    <link rel="stylesheet" href="./../css/style.css">
+    <link rel="stylesheet" href="./../css/dashboard.css">
+    <link rel="shortcut icon" href="./../images/favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Mensaje de Responsabilidad Médica (Emergente) -->
+    <div class="medical-popup" id="medicalPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>⚠️ Aviso de Responsabilidad Médica</h3>
+                <button class="popup-close" id="closeMedicalPopup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <p>
+                    <strong>Importante:</strong> TheHeartCloud es una plataforma comunitaria. 
+                    La información compartida por los usuarios <strong>no sustituye el consejo médico profesional, no crea todo lo que se publique aqui</strong>. 
+                    Siempre consulte con especialistas certificados para diagnósticos y tratamientos médicos.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-container">
+                <!-- Logo -->
+                <div class="logo">
+                    <img src="./../images/logoprincipal.png" alt="TheHeartCloud" class="logo-img">
+                    <span class="logo-text">TheHeartCloud</span>
+                </div>
+
+                <!-- Barra de Búsqueda -->
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="searchForums" 
+                        class="search-input"
+                        placeholder="Buscar foros..."
+                        maxlength="30"
+                    >
+                    <button class="search-btn" id="searchBtn">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                </div>
+
+                <!-- Navegación -->
+                <nav class="nav">
+                    <a href="#dashboard" class="nav-link active">Principal</a>
+                    <a href="./profile.html" class="nav-link">Mi Perfil</a>
+                </nav>
+
+                <!-- Menú móvil -->
+                <button class="mobile-menu-btn" aria-label="Menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <h1>Bienvenido, <span id="userName">Usuario</span> 👋</h1>
+                    <p>Gestiona tus foros y participa en la comunidad.</p>
+                </div>
+                <div class="welcome-actions">
+                    <button class="btn btn-primary" id="createForumBtn">
+                        <span class="btn-icon">➕</span>
+                        Crear Nuevo Foro
+                    </button>
+                </div>
+            </section>
+
+            <!-- Foros Recientes -->
+            <section class="forums-section">
+                <div class="section-header">
+                    <h2>Mis Foros Recientes</h2>
+                </div>
+                
+                <div class="forums-grid" id="recentForums">
+                    <div class="empty-state">
+                        <div class="empty-icon">💬</div>
+                        <h3>No has creado foros aún</h3>
+                        <p>Crea tu primer foro para empezar a conectar con la comunidad.</p>
+                        <button class="btn btn-primary" onclick="openCreateForumModal()">
+                            Crear Mi Primer Foro
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resultados de Búsqueda -->
+            <section class="search-results-section" id="searchResults" style="display: none;">
+                <div class="section-header">
+                    <h2>Resultados de Búsqueda</h2>
+                    <button class="btn btn-primary" id="clearSearch">Limpiar Búsqueda</button>
+                </div>
+                <div class="forums-grid" id="searchResultsGrid">
+                    <!-- Los resultados de búsqueda aparecerán aquí -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Crear Foro -->
+    <div class="modal" id="createForumModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Crear Nuevo Foro</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form class="modal-form" id="createForumForm">
+                <div class="form-group">
+                    <label for="forumName" class="form-label">Nombre del Foro</label>
+                    <input 
+                        type="text" 
+                        id="forumName" 
+                        name="forumName" 
+                        class="form-input"
+                        placeholder="Ej: Nutrición y Salud"
+                        required
+                        minlength="5"
+                        maxlength="30"
+                    >
+                    <div class="form-hint">5-30 caracteres, sin símbolos especiales</div>
+                    <div class="form-error" id="forumNameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="forumDescription" class="form-label">Descripción</label>
+                    <textarea 
+                        id="forumDescription" 
+                        name="forumDescription" 
+                        class="form-textarea"
+                        placeholder="Describe el propósito de este foro..."
+                        required
+                        minlength="10"
+                        maxlength="200"
+                        rows="3"
+                    ></textarea>
+                    <div class="form-hint">10-200 caracteres</div>
+                    <div class="form-error" id="forumDescriptionError"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-primary" id="cancelCreateForum">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitCreateForum">
+                        <span class="btn-text">Crear Foro</span>
+                        <div class="btn-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            Creando...
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="./../js/dashboard.js"></script>
+</body>
+</html>

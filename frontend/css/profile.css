@@ -1,0 +1,532 @@
+.profile-page {
+    background: var(--bg-light);
+    min-height: 100vh;
+}
+
+.profile-main {
+    padding: 100px 0 40px;
+}
+
+/* Profile Header */
+.profile-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+}
+
+.profile-header h1 {
+    color: var(--primary-dark);
+    margin-bottom: var(--space-xs);
+    font-size: 2.5rem;
+}
+
+.profile-header p {
+    color: var(--gray-dark);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Profile Content */
+.profile-content {
+    display: grid;
+    gap: var(--space-xl);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Profile Cards */
+.profile-card {
+    background: var(--white);
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(42, 85, 255, 0.1);
+}
+
+.profile-card h2 {
+    color: var(--primary-dark);
+    margin-bottom: var(--space-lg);
+    font-size: 1.5rem;
+    border-bottom: 2px solid rgba(42, 85, 255, 0.1);
+    padding-bottom: var(--space-sm);
+}
+
+/* Información Personal */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md);
+    background: rgba(42, 85, 255, 0.05);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary-blue);
+}
+
+.info-item label {
+    font-weight: 600;
+    color: var(--primary-dark);
+    min-width: 150px;
+}
+
+.info-item span {
+    color: var(--gray-dark);
+    font-weight: 500;
+}
+
+/* Estadísticas */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-lg);
+}
+
+.stat-item {
+    text-align: center;
+    padding: var(--space-lg);
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Zona de Peligro */
+.danger-zone {
+    border: 2px solid var(--error);
+    background: rgba(220, 53, 69, 0.02);
+}
+
+.danger-zone h2 {
+    color: var(--error);
+    border-bottom-color: rgba(220, 53, 69, 0.2);
+}
+
+.warning-text {
+    color: var(--error);
+    font-weight: 500;
+    margin-bottom: var(--space-lg);
+    text-align: center;
+    padding: var(--space-md);
+    background: rgba(220, 53, 69, 0.1);
+    border-radius: var(--radius-md);
+}
+
+.danger-actions {
+    text-align: center;
+}
+
+.btn-danger {
+    background: var(--error);
+    color: var(--white);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* Modal de Eliminar Cuenta */
+.warning-message {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid var(--warning);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.warning-icon {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: var(--space-md);
+}
+
+.warning-message h3 {
+    color: var(--warning);
+    margin-bottom: var(--space-md);
+    text-align: center;
+}
+
+.warning-message ul {
+    color: var(--gray-dark);
+    margin: var(--space-md) 0;
+    padding-left: var(--space-lg);
+}
+
+.warning-message li {
+    margin-bottom: var(--space-xs);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-main {
+        padding: 80px 0 30px;
+    }
+    
+    .profile-header h1 {
+        font-size: 2rem;
+    }
+    
+    .profile-card {
+        padding: var(--space-lg);
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+    
+    .info-item label {
+        min-width: auto;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: var(--space-md);
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .profile-card {
+        padding: var(--space-md);
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .modal-actions .btn {
+        width: 100%;
+    }
+}
+
+/* Estilos para el modal de eliminar cuenta - VERSIÓN CORREGIDA */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    overflow-y: auto; /* Permitir scroll en el modal completo */
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 20px auto; /* Margen más pequeño para móviles */
+    padding: 0;
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--shadow-lg);
+    animation: modalSlideIn 0.3s ease;
+    position: relative;
+    max-height: 90vh; /* Limitar altura máxima */
+    overflow: hidden; /* Contener el contenido */
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: var(--space-lg);
+    border-bottom: 1px solid rgba(42, 85, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0; /* Evitar que el header se encoja */
+}
+
+.modal-header h2 {
+    color: var(--primary-dark);
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--gray-dark);
+    transition: color 0.3s ease;
+    padding: var(--space-xs);
+    border-radius: var(--radius-sm);
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: var(--error);
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.modal-body {
+    padding: var(--space-lg);
+    overflow-y: auto; /* Permitir scroll solo en el cuerpo */
+    flex: 1; /* Ocupar espacio disponible */
+    max-height: calc(90vh - 140px); /* Altura máxima considerando header y actions */
+}
+
+.modal-form {
+    margin-top: var(--space-lg);
+}
+
+/* Contenedor de contraseña para el modal */
+.password-input-container {
+    position: relative;
+    margin-top: var(--space-xs);
+}
+
+.password-toggle {
+    position: absolute;
+    right: var(--space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-xs);
+    border-radius: var(--radius-sm);
+    transition: background-color 0.3s ease;
+    z-index: 2;
+}
+
+.password-toggle:hover {
+    background: rgba(42, 85, 255, 0.1);
+}
+
+/* Input styles para el modal */
+.form-input {
+    padding: var(--space-md);
+    border: 2px solid rgba(42, 85, 255, 0.2);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--white);
+    width: 100%;
+    padding-right: 50px; /* Espacio para el toggle */
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(42, 85, 255, 0.1);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--gray-dark);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-xs);
+    display: block;
+}
+
+.form-error {
+    color: var(--error);
+    font-size: 0.8rem;
+    min-height: 1rem;
+    margin-top: var(--space-xs);
+    display: none;
+}
+
+.modal-actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: flex-end;
+    margin-top: var(--space-lg);
+    flex-shrink: 0; /* Evitar que los botones se encojan */
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(42, 85, 255, 0.1);
+}
+
+.btn-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+}
+
+.loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Warning message styles */
+.warning-message {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid var(--warning);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.warning-icon {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: var(--space-md);
+}
+
+.warning-message h3 {
+    color: var(--warning);
+    margin-bottom: var(--space-md);
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.warning-message ul {
+    color: var(--gray-dark);
+    margin: var(--space-md) 0;
+    padding-left: var(--space-lg);
+}
+
+.warning-message li {
+    margin-bottom: var(--space-xs);
+    line-height: 1.4;
+}
+
+/* Responsive para modal - MEJORADO */
+@media (max-width: 768px) {
+    .modal {
+        padding: 10px; /* Espacio alrededor en móviles */
+    }
+    
+    .modal-content {
+        margin: 10px auto;
+        width: 95%;
+        max-height: 85vh; /* Menor altura en móviles */
+    }
+    
+    .modal-body {
+        max-height: calc(85vh - 140px);
+        padding: var(--space-md);
+    }
+    
+    .modal-header {
+        padding: var(--space-md);
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+    
+    .modal-actions .btn {
+        width: 100%;
+    }
+    
+    .warning-message {
+        padding: var(--space-md);
+    }
+    
+    .warning-message h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal {
+        padding: 5px;
+    }
+    
+    .modal-content {
+        margin: 5px auto;
+        width: 98%;
+        max-height: 95vh; /* Más altura en pantallas muy pequeñas */
+        border-radius: var(--radius-md);
+    }
+    
+    .modal-body {
+        padding: var(--space-sm);
+        max-height: calc(95vh - 120px);
+    }
+    
+    .modal-header {
+        padding: var(--space-sm) var(--space-md);
+    }
+    
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .warning-message {
+        padding: var(--space-sm);
+    }
+    
+    .warning-message ul {
+        padding-left: var(--space-md);
+    }
+    
+    .form-input {
+        padding: var(--space-sm) var(--space-md);
+        padding-right: 45px;
+    }
+}
+
+/* Prevenir scroll del body cuando el modal está abierto */
+body.modal-open {
+    overflow: hidden;
+}
