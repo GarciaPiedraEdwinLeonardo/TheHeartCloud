@@ -150,8 +150,6 @@ async function deleteForum(req, res) {
     }
 }
 
-// ===== NUEVAS FUNCIONES =====
-
 // Obtener foro por ID
 async function getForumById(req, res) {
     try {

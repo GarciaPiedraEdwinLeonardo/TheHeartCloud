@@ -25,6 +25,43 @@ app.use(session({
     }
 }));
 
+// Agregar después de los middlewares básicos
+app.use((err, req, res, next) => {
+    console.error('❌ Error no manejado:', err);
+    res.status(500).json({
+        success: false,
+        message: 'Error interno del servidor'
+    });
+});
+
+// Rate limiting básico
+const rateLimit = {};
+app.use((req, res, next) => {
+    const ip = req.ip;
+    const now = Date.now();
+    const windowMs = 15 * 60 * 1000; // 15 minutos
+    const maxRequests = 100; // Máximo 100 requests por IP
+    
+    if (!rateLimit[ip]) {
+        rateLimit[ip] = { count: 1, startTime: now };
+    } else {
+        if (now - rateLimit[ip].startTime > windowMs) {
+            rateLimit[ip] = { count: 1, startTime: now };
+        } else {
+            rateLimit[ip].count++;
+        }
+    }
+    
+    if (rateLimit[ip].count > maxRequests) {
+        return res.status(429).json({
+            success: false,
+            message: 'Demasiadas solicitudes. Intenta más tarde.'
+        });
+    }
+    
+    next();
+});
+
 // Middleware para mostrar info de sesión
 app.use((req, res, next) => {
     console.log('📱 Sesión:', req.sessionID);

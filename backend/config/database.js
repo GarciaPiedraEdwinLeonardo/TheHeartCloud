@@ -8,12 +8,52 @@ const dbConfig = {
     database: process.env.DB_NAME || 'TheHearthCloud',
     port: process.env.DB_PORT || 3306,
     waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    connectionLimit: 20,
+    queueLimit: 0,
 };
 
 // Pool de conexiones
 const pool = mysql.createPool(dbConfig);
+
+const queryCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000;
+
+async function query(sql, params = [], useCache = false) {
+    try {
+        // Generar clave de cache
+        const cacheKey = useCache ? `${sql}-${JSON.stringify(params)}` : null;
+        
+        if (useCache && cacheKey && queryCache.has(cacheKey)) {
+            const cached = queryCache.get(cacheKey);
+            if (Date.now() - cached.timestamp < CACHE_TTL) {
+                console.log('Usando cache para query');
+                return cached.data;
+            }
+        }const [results] = await pool.execute(sql, params);
+        
+        if (useCache && cacheKey) {
+            queryCache.set(cacheKey, {
+                data: results,
+                timestamp: Date.now()
+            });
+        }
+        
+        return results;
+    } catch (error) {
+        console.error('❌ Error en query:', error.message);
+        throw error;
+    }
+}
+
+// Limpiar cache periódicamente
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, value] of queryCache.entries()) {
+        if (now - value.timestamp > CACHE_TTL) {
+            queryCache.delete(key);
+        }
+    }
+}, CACHE_TTL);
 
 // Función para probar conexión
 async function testConnection() {
@@ -23,7 +63,7 @@ async function testConnection() {
         
         // Verificar tablas
         const [tables] = await connection.execute('SHOW TABLES');
-        console.log('📊 Tablas en la base de datos:', tables.map(t => t.Tables_in_thehearthcloud));
+        console.log('Tablas en la base de datos:', tables.map(t => t.Tables_in_thehearthcloud));
         connection.release();
         return true;
     } catch (error) {
