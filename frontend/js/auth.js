@@ -329,8 +329,7 @@ class AuthManager {
     }
 
     showSuccess(message) {
-        // Puedes implementar notificaciones toast aquí
-        alert(message); // Temporal - reemplazar con sistema de notificaciones
+        alert(message);
     }
 
     updateUIForAuthenticatedUser(user) {
@@ -338,7 +337,7 @@ class AuthManager {
         const nav = document.querySelector('.nav');
         if (nav) {
             nav.innerHTML = `
-                <a href="/pages/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="/pages/dashboard.html" class="nav-link">Principal</a>
                 <a href="/pages/profile.html" class="nav-link">Mi Perfil</a>
                 <a href="#" class="nav-link login-btn" id="logoutBtn">Cerrar Sesión</a>
             `;
