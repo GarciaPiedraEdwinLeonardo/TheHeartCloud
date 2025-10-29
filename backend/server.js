@@ -12,7 +12,13 @@ const PORT = process.env.PORT || 3000;
 // Middlewares básicos
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '../frontend')));
+
+
+app.use(express.static(path.join(__dirname, '../')));
+app.use('/css', express.static(path.join(__dirname, '../frontend/css')));
+app.use('/images', express.static(path.join(__dirname, '../frontend/images')));
+app.use('/js', express.static(path.join(__dirname, '../frontend/js')));
+app.use('/pages', express.static(path.join(__dirname, '../frontend/pages')));
 
 // Configuración de sesiones
 app.use(session({
@@ -24,43 +30,6 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
-
-// Agregar después de los middlewares básicos
-app.use((err, req, res, next) => {
-    console.error('❌ Error no manejado:', err);
-    res.status(500).json({
-        success: false,
-        message: 'Error interno del servidor'
-    });
-});
-
-// Rate limiting básico
-const rateLimit = {};
-app.use((req, res, next) => {
-    const ip = req.ip;
-    const now = Date.now();
-    const windowMs = 15 * 60 * 1000; // 15 minutos
-    const maxRequests = 100; // Máximo 100 requests por IP
-    
-    if (!rateLimit[ip]) {
-        rateLimit[ip] = { count: 1, startTime: now };
-    } else {
-        if (now - rateLimit[ip].startTime > windowMs) {
-            rateLimit[ip] = { count: 1, startTime: now };
-        } else {
-            rateLimit[ip].count++;
-        }
-    }
-    
-    if (rateLimit[ip].count > maxRequests) {
-        return res.status(429).json({
-            success: false,
-            message: 'Demasiadas solicitudes. Intenta más tarde.'
-        });
-    }
-    
-    next();
-});
 
 // Middleware para mostrar info de sesión
 app.use((req, res, next) => {
@@ -79,6 +48,38 @@ app.use('/api/auth', authRoutes);
 app.use('/api/forums', forumRoutes);
 app.use('/api/users', userRoutes);
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/login.html'));
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/register.html'));
+});
+
+app.get('/forgot-password', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/forgot-password.html'));
+});
+
+app.get('/terms', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/terms.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/dashboard.html'));
+});
+
+app.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/profile.html'));
+});
+
+app.get('/forum', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/forum.html'));
+});
+
 // Rutas básicas de prueba
 app.get('/api/status', (req, res) => {
     res.json({ 
@@ -95,25 +96,19 @@ app.get('/api/test-db', (req, res) => {
     });
 });
 
-// Servir el frontend
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
-});
-
 app.get('/api/test-usuario', async (req, res) => {
-        try {
-            const { buscarUsuarioPorCorreo } = require('./config/database');
-            const usuario = await buscarUsuarioPorCorreo('test@test.com');
-        
-            res.json({
-                message: '✅ Prueba de base de datos exitosa',
-                usuarioEncontrado: usuario || 'No hay usuarios de prueba'
-            });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
+    try {
+        const { buscarUsuarioPorCorreo } = require('./config/database');
+        const usuario = await buscarUsuarioPorCorreo('test@test.com');
+    
+        res.json({
+            message: '✅ Prueba de base de datos exitosa',
+            usuarioEncontrado: usuario || 'No hay usuarios de prueba'
         });
-
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 // Manejo de rutas no encontradas
 app.use('*', (req, res) => {
@@ -122,12 +117,10 @@ app.use('*', (req, res) => {
 
 const { testConnection } = require('./config/database.js');
 
-
 const startServer = async () => {
     try {
         // Probar conexión a la base de datos primero
         await testConnection();
-
         
         // Iniciar servidor
         app.listen(PORT, '0.0.0.0', () => {

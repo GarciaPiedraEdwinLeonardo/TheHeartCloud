@@ -492,12 +492,11 @@ class DashboardManager {
             this.showFieldError(field, message);
         } else {
             // Mostrar error general
-            alert(message); // Temporal - reemplazar con sistema de notificaciones
+            alert(message); 
         }
     }
 
     showSuccess(message) {
-        // Temporal - implementar sistema de notificaciones toast
         alert(message);
     }
 
