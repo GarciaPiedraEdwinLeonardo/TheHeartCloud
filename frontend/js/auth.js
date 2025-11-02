@@ -365,9 +365,117 @@ class AuthManager {
             console.error('Error al cerrar sesión:', error);
         }
     }
+
+// Validar que no tenga emojis ni caracteres especiales
+validateNoEmojis(input) {
+    const value = input.value;
+    const errorElement = document.getElementById(`${input.id}Error`);
+    
+    // Expresión regular que bloquea emojis y caracteres especiales
+    const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu;
+    const specialCharRegex = /[<>$#@!%^&*()+={}\[\]:;"'|\\~`]/;
+    
+    if (emojiRegex.test(value)) {
+        this.showError(errorElement, 'No se permiten emojis');
+        input.classList.add('invalid');
+        return false;
+    }
+    
+    if (specialCharRegex.test(value)) {
+        this.showError(errorElement, 'No se permiten caracteres especiales');
+        input.classList.add('invalid');
+        return false;
+    }
+    
+    if (/\s/.test(value) && input.id === 'password') {
+        this.showError(errorElement, 'La contraseña no puede contener espacios');
+        input.classList.add('invalid');
+        return false;
+    }
+    
+    this.hideError(errorElement);
+    input.classList.remove('invalid');
+    return true;
 }
 
-// Inicializar cuando el DOM esté listo
+// Validar pregunta de seguridad
+validateSecurityQuestion(input) {
+    const value = input.value;
+    const errorElement = document.getElementById(`${input.id}Error`);
+    
+    // Permitir letras, números, espacios, acentos y signos de puntuación básicos
+    const allowedRegex = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s¿?¡!., ]+$/;
+    const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}]/gu;
+    
+    if (emojiRegex.test(value)) {
+        this.showError(errorElement, 'La pregunta no puede contener emojis');
+        input.classList.add('invalid');
+        return false;
+    }
+    
+    if (!allowedRegex.test(value)) {
+        this.showError(errorElement, 'Solo se permiten letras, números y signos de puntuación básicos');
+        input.classList.add('invalid');
+        return false;
+    }
+    
+    this.hideError(errorElement);
+    input.classList.remove('invalid');
+    return true;
+}
+
+// Validar respuesta de seguridad
+validateSecurityAnswer(input) {
+    const value = input.value;
+    const errorElement = document.getElementById(`${input.id}Error`);
+    
+    // Solo letras, números y espacios (case-insensitive)
+    const allowedRegex = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+    const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}]/gu;
+    
+    if (emojiRegex.test(value)) {
+        this.showError(errorElement, 'La respuesta no puede contener emojis');
+        input.classList.add('invalid');
+        return false;
+    }
+    
+    if (!allowedRegex.test(value)) {
+        this.showError(errorElement, 'Solo se permiten letras, números y espacios');
+        input.classList.add('invalid');
+        return false;
+    }
+    
+    this.hideError(errorElement);
+    input.classList.remove('invalid');
+    return true;
+}
+
+}
+
+function validateNoEmojis(input) {
+    const authManager = window.authManager;
+    if (authManager) {
+        authManager.validateNoEmojis(input);
+    }
+}
+
+function validateSecurityQuestion(input) {
+    const authManager = window.authManager;
+    if (authManager) {
+        authManager.validateSecurityQuestion(input);
+    }
+}
+
+function validateSecurityAnswer(input) {
+    const authManager = window.authManager;
+    if (authManager) {
+        authManager.validateSecurityAnswer(input);
+    }
+}
+
+// Asegurar que authManager esté disponible globalmente
+let authManager;
 document.addEventListener('DOMContentLoaded', () => {
-    new AuthManager();
+    authManager = new AuthManager();
+    window.authManager = authManager;
 });

@@ -95,6 +95,7 @@
                                     required
                                     minlength="8"
                                     maxlength="16"
+                                    oninput="validateNoEmojis(this)"
                                     autocomplete="new-password"
                                 >
                                 <button type="button" class="password-toggle" id="passwordToggle">
@@ -116,6 +117,7 @@
                                     class="form-input"
                                     placeholder="Repite tu contraseña"
                                     required
+                                    oninput="validateNoEmojis(this)"
                                     autocomplete="new-password"
                                 >
                                 <button type="button" class="password-toggle" id="confirmPasswordToggle">
@@ -137,6 +139,7 @@
                                 required
                                 minlength="10"
                                 maxlength="100"
+                                oninput="validateSecurityQuestion(this)"
                             >
                             <div class="form-hint">10-100 caracteres</div>
                             <div class="form-error" id="securityQuestionError"></div>
@@ -154,6 +157,7 @@
                                 required
                                 minlength="2"
                                 maxlength="60"
+                                oninput="validateSecurityAnswer(this)"
                             >
                             <div class="form-hint">2-60 caracteres, solo letras y números</div>
                             <div class="form-error" id="securityAnswerError"></div>

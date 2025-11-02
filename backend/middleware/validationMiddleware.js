@@ -52,6 +52,26 @@ function validateRegister(req, res, next) {
         errors.push('Debes aceptar los términos y condiciones');
     }
 
+    // Validar contraseña sin emojis
+    if (password && /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}]/gu.test(password)) {
+        errors.push('La contraseña no puede contener emojis');
+    }
+
+    // Validar pregunta de seguridad
+    if (pregunta_seguridad && /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}]/gu.test(pregunta_seguridad)) {
+        errors.push('La pregunta de seguridad no puede contener emojis');
+    }
+
+    // Validar respuesta de seguridad
+    if (respuesta_seguridad && /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}]/gu.test(respuesta_seguridad)) {
+        errors.push('La respuesta de seguridad no puede contener emojis');
+    }
+
+    // Validar caracteres específicos en respuesta de seguridad
+    if (respuesta_seguridad && !/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(respuesta_seguridad)) {
+        errors.push('La respuesta de seguridad solo puede contener letras, números y espacios');
+    }
+
     if (errors.length > 0) {
         return res.status(400).json({
             success: false,
@@ -59,7 +79,6 @@ function validateRegister(req, res, next) {
             errors: errors
         });
     }
-
     next();
 }
 
