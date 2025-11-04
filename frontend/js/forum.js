@@ -281,7 +281,6 @@ class ForumManager {
         postsContainer.innerHTML = postsHTML;
     }
 
-    // ===== PUBLICACIONES =====
 
     async handleCreatePost(e) {
         e.preventDefault();
@@ -403,8 +402,9 @@ class ForumManager {
     async handleDeletePost() {
         if (!this.editingPostId) return;
 
+        const submitBtn = document.getElementById('confirmDeletePost');
+
         try {
-            const submitBtn = document.getElementById('confirmDeletePost');
             this.showLoading(submitBtn, 'Eliminando...');
 
             const response = await fetch(`${this.apiBase}/forums/posts/${this.editingPostId}`, {
@@ -471,7 +471,6 @@ updateEditPostCharCounter() {
     }
 }
 
-    // ===== COMENTARIOS =====
 
     async handleCreateComment(e, postId) {
         e.preventDefault();
@@ -515,7 +514,6 @@ updateEditPostCharCounter() {
 
 // Abrir modal para editar comentario
 openEditCommentModal(commentId, postId) {
-    console.log('📝 Abriendo modal para editar comentario:', commentId, 'en publicación:', postId);
     
     // Encontrar el comentario en los posts cargados
     let targetComment = null;
@@ -550,7 +548,6 @@ openEditCommentModal(commentId, postId) {
     document.getElementById('editCommentModal').style.display = 'block';
     document.body.classList.add('modal-open');
     
-    console.log('✅ Modal de edición de comentario abierto');
 }
 
 // Cerrar modal de edición de comentario
@@ -579,8 +576,6 @@ async handleEditComment(e) {
         this.showLoading(submitBtn, 'Guardando...');
         this.clearFormErrors();
 
-        console.log('🔄 Actualizando comentario:', this.editingCommentId);
-        console.log('📝 Nuevo contenido:', commentContent);
 
         // Llamar al endpoint para actualizar comentario
         const response = await fetch(`${this.apiBase}/forums/comments/${this.editingCommentId}`, {
@@ -595,7 +590,6 @@ async handleEditComment(e) {
         });
 
         const result = await response.json();
-        console.log('📊 Resultado de actualización:', result);
 
         if (result.success) {
             // Recargar los posts para mostrar los cambios
@@ -700,7 +694,7 @@ setupModalCloseOnOutsideClick() {
         }
     }
 
-    // ===== ELIMINAR FORO =====
+    //ELIMINAR FORO
 
     openDeleteForumModal() {
         document.getElementById('deleteForumModal').style.display = 'block';
@@ -715,8 +709,9 @@ setupModalCloseOnOutsideClick() {
     async handleDeleteForum() {
         if (!this.currentForum) return;
 
+        const submitBtn = document.getElementById('confirmDeleteForum');
+
         try {
-            const submitBtn = document.getElementById('confirmDeleteForum');
             this.showLoading(submitBtn, 'Eliminando...');
 
             const response = await fetch(`${this.apiBase}/forums/${this.currentForum.id}`, {
@@ -851,11 +846,15 @@ setupModalCloseOnOutsideClick() {
     }
 
     showSuccess(message) {
-        alert('✅ ' + message);
+        if (window.notifications) {
+            window.notifications.success(message);
+        }
     }
 
     showError(message) {
-        alert('❌ ' + message);
+        if (window.notifications) {
+            window.notifications.error(message);
+        }
     }
 
     escapeHtml(text) {

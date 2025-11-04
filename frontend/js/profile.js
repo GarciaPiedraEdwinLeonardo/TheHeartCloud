@@ -262,12 +262,15 @@ class ProfileManager {
     }
 
     showSuccess(message) {
-        // Temporal - implementar sistema de notificaciones toast
-        alert('✅ ' + message);
+        if (window.notifications) {
+            window.notifications.success(message);
+        }
     }
 
     showError(message) {
-        alert('❌ ' + message);
+        if (window.notifications) {
+            window.notifications.error(message);
+        }
     }
 
     formatDate(dateString) {

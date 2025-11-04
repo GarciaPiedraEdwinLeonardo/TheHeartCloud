@@ -297,7 +297,6 @@ class RecoveryManager {
             step.classList.remove('active', 'completed');
         });
         
-        // Mark previous steps as completed and current as active
         for (let i = 1; i <= currentStep; i++) {
             const stepElement = document.querySelector(`.step-indicator .step-number:nth-child(${i * 2 - 1})`);
             if (stepElement) {

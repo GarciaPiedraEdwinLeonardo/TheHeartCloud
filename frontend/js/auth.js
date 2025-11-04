@@ -88,6 +88,8 @@ class AuthManager {
             this.clearErrors();
             this.showLoading(submitBtn, 'Iniciando sesión...');
 
+            LoadingManager.showFullScreenLoader('Iniciando sesión...');
+
             const formData = new FormData(form);
             const data = {
                 correo: formData.get('email'),
@@ -123,6 +125,7 @@ class AuthManager {
             this.showError(generalError, 'Error de conexión. Intenta nuevamente.');
         } finally {
             this.hideLoading(submitBtn, 'Iniciar Sesión');
+            LoadingManager.hideFullScreenLoader();
         }
     }
 
@@ -329,7 +332,9 @@ class AuthManager {
     }
 
     showSuccess(message) {
-        alert(message);
+        if (window.notifications) {
+            window.notifications.success(message);
+        }
     }
 
     updateUIForAuthenticatedUser(user) {

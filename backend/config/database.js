@@ -26,7 +26,6 @@ async function query(sql, params = [], useCache = false) {
         if (useCache && cacheKey && queryCache.has(cacheKey)) {
             const cached = queryCache.get(cacheKey);
             if (Date.now() - cached.timestamp < CACHE_TTL) {
-                console.log('Usando cache para query');
                 return cached.data;
             }
         }const [results] = await pool.execute(sql, params);

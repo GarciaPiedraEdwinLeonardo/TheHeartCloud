@@ -8,11 +8,17 @@
     "dev": "node --watch server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["forum", "medical", "express", "mysql"],
+  "keywords": [
+    "forum",
+    "medical",
+    "express",
+    "mysql"
+  ],
   "author": "Equipo 6 - 5IV8",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "compression": "^1.8.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",

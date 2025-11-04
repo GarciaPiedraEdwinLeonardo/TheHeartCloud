@@ -14,7 +14,7 @@ async function registrarUsuario(req, res) {
                 suggestion: '¿Quieres iniciar sesión?'
             });
         }
-        //CORREGIDO: Verificar si el nombre de usuario ya existe
+        //Verificar si el nombre de usuario ya existe
         const sqlCheckUsername = 'SELECT id FROM usuarios WHERE nombre_usuario = ?';
         const usernameResult = await query(sqlCheckUsername, [nombre_usuario]);
         if (usernameResult && usernameResult.length > 0) {

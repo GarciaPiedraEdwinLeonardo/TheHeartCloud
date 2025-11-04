@@ -2,12 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const compression = require('compression');
 
 const forumRoutes = require('./routes/forumRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(compression());
 
 // Middlewares básicos
 app.use(express.json());

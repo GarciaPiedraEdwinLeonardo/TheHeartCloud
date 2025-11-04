@@ -59,6 +59,19 @@ class DashboardManager {
         document.getElementById('clearSearch')?.addEventListener('click', () => this.clearSearch());
 
         this.setupModalCloseOnOutsideClick();   
+
+        const searchInput = document.getElementById('searchForums');
+        if (searchInput) {
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    if (e.target.value.trim().length >= 2) {
+                        this.handleSearch();
+                    }
+                }, 500);
+            });
+        }
     }
 
     setupMedicalPopup() {
@@ -100,23 +113,30 @@ class DashboardManager {
     }
 
     async loadRecentForums() {
-        try {
-            const response = await fetch(`${this.apiBase}/forums/my-forums`, {
-                credentials: 'include'
-            });
+    const forumsGrid = document.getElementById('recentForums');
+    
+    try {
+        
+        if (forumsGrid) {
+            forumsGrid.innerHTML = LoadingManager.createSkeletonLoader('card', 3);
+        }
 
-            if (response.ok) {
-                const data = await response.json();
-                this.recentForums = data.forums || [];
-                this.renderRecentForums();
-            } else {
-                this.showEmptyForumsState();
-            }
-        } catch (error) {
-            console.error('Error cargando foros recientes:', error);
+        const response = await fetch(`${this.apiBase}/forums/my-forums`, {
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            this.recentForums = data.forums || [];
+            this.renderRecentForums();
+        } else {
             this.showEmptyForumsState();
         }
+    } catch (error) {
+        console.error('Error cargando foros recientes:', error);
+        this.showEmptyForumsState();
     }
+}
 
     renderRecentForums() {
         const forumsGrid = document.getElementById('recentForums');
@@ -497,11 +517,15 @@ class DashboardManager {
     }
 
     showSuccess(message) {
-        alert(message);
+        if (window.notifications) {
+            window.notifications.success(message);
+        }
     }
 
     showError(message) {
-        alert('❌ ' + message);
+        if (window.notifications) {
+            window.notifications.error(message);
+        }
     }
 
     escapeHtml(text) {
@@ -518,7 +542,6 @@ class DashboardManager {
             day: 'numeric'
         });
     }
-
 }
 
 // Funciones globales para onclick
